@@ -23,4 +23,32 @@ public class ClienteController {
         ClienteRdn rdn = new ClienteRdn();
         return rdn.obterPorId(id);
     }
+    
+    @PostMapping("/clientes")
+    public int Post(@RequestBody Cliente pcli) throws SQLException{
+
+        ClienteRdn rdn = new ClienteRdn();
+        return rdn.inserir(pcli);
+    }
+
+    @PutMapping("clientes/{id}")
+    public int Put(@PathVariable(value = "id") int id,@RequestBody Cliente pCliente){
+        ClienteRdn rdn = new ClienteRdn();
+        if(rdn.obterPorId(id).getId()>0){
+            return rdn.alterar(pCliente);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cliente no encontrado");
+        }
+    }
+    @DeleteMapping("clientes/{id}")
+        public int Delete (@PathVariable(value="id") int id){
+            ClienteRdn rdn = new ClienteRdn();
+            if(rdn.obterPorId(id).getId()>0){
+                return rdn.deletar(id);
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cliente no encontrado");
+            }
+    }
 }
